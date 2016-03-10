@@ -8,7 +8,7 @@
 
 # Vagrant Deployed Mesos Cluster with Calico
 This guide will start a running Mesos cluster with Calico Networking using a simple `vagrant up`. 
-It automates the the same installation procedure that is documented in the [RPM Installation Guide](RpmInstallCalicoMesos.md).
+It automates the the installation procedure that is documented in the [RPM Installation Guide](RpmInstallCalicoMesos.md) while additionally running calico-libnetwork to form a mesos cluster which can launch Calico-Networked tasks launched via the Unified Containerizer or the Docker Containerizer.
 
 This guide will start two VMs on your hypervisor with the following layout:
 ### Master
@@ -23,13 +23,16 @@ All services on Master are installed from official upstream RPMs.
    * `marathon`
 
 ### Agent
-The Mesos Agent is configured with several custom RPMs. Mesos is installed with Netmodules using the Netmodules RPM bundle, and Calico is added and configured using the calico-mesos.rpm provided in this repository. Once both are installed, the agent will match the following specification:
+The Mesos Agent is configured using unofficial Mesos-Netmodules RPMs produced by the net-modules repository, as well as the calico-mesos RPM. Once installed, the agent will match the following specification:
  * **OS**: `Centos`
  * **Hostname**: `calico-02`
  * **IP**: `172.18.8.102`
- * **Docker Containers**:
+ * **Running Services**:
    * `mesos-agent`
+ * **Docker Containers**:
    * `calico-node`
+   * `calico-libnetwork`
+
 
 ## Prerequisites
 This guide requires a hypervisor with the following specs:
@@ -70,8 +73,8 @@ Every agent instance will take similar form to the agent instance above:
  * **Hostname**: `calico-0X`
  * **IP**: `172.18.8.10X`
  * **Docker Containers**:
-	 * `mesos-agent` - `calico/mesos-calico`
-	 * `calico-node` - `calico/node`
+   * `mesos-agent` - `calico/mesos-calico`
+   * `calico-node` - `calico/node`
 
 where `X` is the instance number.
  

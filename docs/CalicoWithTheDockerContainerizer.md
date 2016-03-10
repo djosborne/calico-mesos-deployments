@@ -16,35 +16,12 @@ containerizer.  This guide covers:
 -  Creating a Docker network and managing network policy
 -  Launching a container
 
-## Set up Docker multi-host networking
 
-To utilize the Docker libnetwork plugin feature of Docker, it is necessary to 
-run with a Docker version 1.9 or higher, and to configure Docker to use a
-cluster store.  We'll set up an etcd datastore which will be used by Docker and
-Calico.
+## Prerequisites
+### etcd
+Calico uses etcd as its datastore. Follow the [etcd installation instructions](MesosClusterPreparation.md#etcd) for information on how to install etcd on your master.
 
-#### Install etcd
-
-Set up an etcd cluster.  For initial testing we’d recommend starting with a
-single-node cluster on one of your master nodes.
-
-For simplicity there is a Docker image you can use to spin up a single etcd
-instance.  On the selected server, run the following
-
-```
-IP=<IP Address>
-sudo docker pull quay.io/coreos/etcd:v2.2.0
-sudo mkdir -p /var/etcd
-sudo docker run --detach --name etcd --net host -v /var/etcd:/data quay.io/coreos/etcd:v2.2.0 \
-     --advertise-client-urls "http://${IP}:2379,http://${IP}:4001" \
-     --listen-client-urls "http://0.0.0.0:2379,http://0.0.0.0:4001" \
-     --data-dir /data
-```
-
-replacing `<IP Address>` with the server IP address.
-
-#### Set up Docker daemon to use etcd as a cluster store
-
+### Configure Docker to use etcd as a cluster store
 On each agent:
 -  Stop your docker service.
 -  If you don’t already have at least Docker 1.9 then upgrade/install Docker
