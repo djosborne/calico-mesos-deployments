@@ -40,7 +40,7 @@ SCRIPT
 $write_mesos_dns_config=<<SCRIPT
 cat <<EOF > /etc/sysconfig/mesos-dns
 {
-  "zk": "zk://${1}:2181/mesos/",
+  "zk": "",
   "masters": ["${1}:5050"],
   "refreshSeconds": 5,
   "ttl": 60,
