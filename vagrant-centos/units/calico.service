@@ -4,9 +4,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-TimeoutStartSec=0
 EnvironmentFile=/etc/sysconfig/calico
-ExecStartPre=-/usr/bin/calicoctl checksystem --fix
 ExecStart=/usr/bin/calicoctl node --detach=false
 
 [Install]
